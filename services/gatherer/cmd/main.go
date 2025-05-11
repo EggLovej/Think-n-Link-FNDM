@@ -4,9 +4,9 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/EggLovej/Think-n-Link-FNDM/services/gatherer/internal/handler"
 	"github.com/go-chi/chi/v5"
 	"github.com/joho/godotenv"
-	"github.com/EggLovej/Think-n-Link-FNDM/subprocessoids/snifflomatron/internal/handler"
 )
 
 func main() {

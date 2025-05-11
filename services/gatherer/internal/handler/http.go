@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/EggLovej/Think-n-Link-FNDM/services/gatherer/internal/client"
 	"github.com/go-chi/chi/v5"
-	"github.com/EggLovej/Think-n-Link-FNDM/subprocessoids/snifflomatron/internal/client"
 )
 
 func GetStockData(w http.ResponseWriter, r *http.Request) {

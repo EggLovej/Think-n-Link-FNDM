@@ -1,4 +1,4 @@
-module github.com/EggLovej/Think-n-Link-FNDM/subprocessoids/snifflomatron
+module github.com/EggLovej/Think-n-Link-FNDM/services/gatherer
 
 go 1.24.3
 
