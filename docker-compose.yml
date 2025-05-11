@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  data-gatherer:
+    build:
+      context: ./data-gatherer
+    container_name: data-gatherer
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./data-gatherer/.env
+    restart: unless-stopped
