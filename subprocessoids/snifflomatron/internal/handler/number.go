@@ -7,5 +7,5 @@ import (
 
 func GetNumber(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(map[string]int{"number": 62})
+	json.NewEncoder(w).Encode(map[string]int{"number": 69})
 }

@@ -3,6 +3,7 @@ package client
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"sort"
@@ -15,8 +16,9 @@ type TimeSeries struct {
 
 func FetchDailyTimeSeries(symbol string) ([]TimeSeries, error) {
 	apiKey := os.Getenv("ALPHAVANTAGE_API_KEY")
+	log.Printf("Using Alpha Vantage API key: %s", apiKey)
 	url := fmt.Sprintf(
-		"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%s&apikey=%s",
+		"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=%s&apikey=%s",
 		symbol, apiKey,
 	)
 
@@ -31,7 +33,20 @@ func FetchDailyTimeSeries(symbol string) ([]TimeSeries, error) {
 		return nil, err
 	}
 
-	timeSeries := raw["Time Series (Daily)"].(map[string]interface{})
+	if note, ok := raw["Note"]; ok {
+		return nil, fmt.Errorf("rate limited: %v", note)
+	}
+
+	rawSeries, ok := raw["Time Series (Daily)"]
+	if !ok {
+		return nil, fmt.Errorf("missing 'Time Series (Daily)' in API response")
+	}
+
+	timeSeries, ok := rawSeries.(map[string]interface{})
+	if !ok {
+		return nil, fmt.Errorf("'Time Series (Daily)' is not a valid object")
+	}
+
 	dates := make([]string, 0, len(timeSeries))
 	for date := range timeSeries {
 		dates = append(dates, date)
@@ -39,7 +54,7 @@ func FetchDailyTimeSeries(symbol string) ([]TimeSeries, error) {
 	sort.Sort(sort.Reverse(sort.StringSlice(dates)))
 
 	result := []TimeSeries{}
-	for _, date := range dates[:5] {
+	for _, date := range dates[:100] {
 		entry := timeSeries[date].(map[string]interface{})
 		closeVal := entry["4. close"].(string)
 		var close float64

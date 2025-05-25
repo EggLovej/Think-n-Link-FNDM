@@ -40,7 +40,7 @@ Example request:
 curl http://localhost:8080/number
 
 Example response:
-{"number":62}
+{"number":62} 
 
 ---
 
